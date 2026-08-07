@@ -7,7 +7,7 @@ import Layout from './Layout'
 
 function App() {
   const [session, setSession] = useState(null)
-  const [view, setView] = useState('clients')
+  const [view, setView] = useState('dashboard')
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
