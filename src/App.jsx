@@ -3,6 +3,7 @@ import { supabase } from './supabaseClient'
 import Login from './Login'
 import Clients from './Clients'
 import Dashboard from './Dashboard'
+import Layout from './Layout'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -25,18 +26,15 @@ function App() {
   }
 
   return (
-    <div>
-      <p>Connecté en tant que {session.user.email}</p>
-      <button onClick={() => supabase.auth.signOut()}>Se déconnecter</button>
-
-      <nav>
-        <button onClick={() => setView('clients')}>Clients</button>
-        <button onClick={() => setView('dashboard')}>Dashboard</button>
-      </nav>
-
+    <Layout
+      view={view}
+      onNavigate={setView}
+      userEmail={session.user.email}
+      onSignOut={() => supabase.auth.signOut()}
+    >
       {view === 'clients' && <Clients />}
       {view === 'dashboard' && <Dashboard />}
-    </div>
+    </Layout>
   )
 }
 

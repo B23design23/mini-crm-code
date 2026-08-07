@@ -15,22 +15,50 @@ function Login() {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Se connecter</button>
-      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
-    </form>
+    <div className="flex min-h-screen items-center justify-center bg-page px-4">
+      <div className="w-full max-w-sm rounded-lg border border-border bg-surface p-8">
+        <h1 className="mb-6 text-center text-lg font-bold text-text-primary">Mini CRM</h1>
+
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email" className="text-sm font-medium text-text-primary">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password" className="text-sm font-medium text-text-primary">
+              Mot de passe
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="mt-2 w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+          >
+            Se connecter
+          </button>
+
+          {errorMsg && <p className="text-sm text-danger">{errorMsg}</p>}
+        </form>
+      </div>
+    </div>
   )
 }
 
