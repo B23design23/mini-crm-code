@@ -64,7 +64,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         </button>
       </header>
 
-      <nav className="fixed inset-x-4 bottom-0 z-30 mb-[calc(1rem+env(safe-area-inset-bottom))] flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
+      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
         <MobileTabLink
           icon={LayoutDashboard}
           label="Dashboard"
