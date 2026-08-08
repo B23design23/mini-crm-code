@@ -55,7 +55,7 @@ function Clients() {
   if (selectedClient) {
     return (
       <div>
-        <h2 className="text-2xl font-bold text-text-primary">
+        <h2 className="font-heading text-2xl font-bold text-text-primary">
           Fiche client : {selectedClient.nom}
         </h2>
         <div className="mt-6">
@@ -92,7 +92,7 @@ function Clients() {
 
   return (
     <div>
-      <h2 className="hidden text-2xl font-bold text-text-primary sm:block">Clients</h2>
+      <h2 className="hidden font-heading text-2xl font-bold text-text-primary sm:block">Clients</h2>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <input
@@ -100,11 +100,11 @@ function Clients() {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="Rechercher un client..."
-          className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent sm:max-w-xs"
+          className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent sm:max-w-xs"
         />
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full shrink-0 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 sm:w-auto"
+          className="w-full shrink-0 rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 sm:w-auto"
         >
           + Ajouter un client
         </button>
@@ -115,7 +115,7 @@ function Clients() {
           <div
             key={client.id}
             onClick={() => setSelectedClient(client)}
-            className="flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-border bg-surface p-4"
+            className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-border bg-surface/85 p-4 shadow-soft"
           >
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-text-primary">{client.nom}</p>
@@ -127,7 +127,7 @@ function Clients() {
         ))}
       </div>
 
-      <div className="mt-4 hidden overflow-x-auto rounded-lg border border-border bg-surface sm:block">
+      <div className="mt-4 hidden overflow-x-auto rounded-2xl border border-border bg-surface/85 shadow-soft sm:block">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-border text-text-secondary">
@@ -151,7 +151,7 @@ function Clients() {
               <tr
                 key={client.id}
                 onClick={() => setSelectedClient(client)}
-                className="cursor-pointer border-b border-border last:border-b-0 hover:bg-page"
+                className="cursor-pointer border-b border-border odd:bg-surface even:bg-page last:border-b-0 hover:bg-accent/10"
               >
                 <td className="whitespace-nowrap px-4 py-3 text-text-primary">{client.nom}</td>
                 <td className="whitespace-nowrap px-4 py-3 text-text-primary">{client.telephone}</td>
@@ -180,7 +180,7 @@ function Clients() {
         />
         <div
           className={
-            'absolute inset-x-0 bottom-0 flex max-h-[90vh] w-full flex-col overflow-y-auto rounded-t-xl border-t border-border bg-surface p-6 shadow-lg transition-transform duration-300 ' +
+            'absolute inset-x-0 bottom-0 flex max-h-[90vh] w-full flex-col overflow-y-auto rounded-t-xl border-t border-border bg-surface p-6 shadow-drawer transition-transform duration-300 ' +
             'sm:inset-x-auto sm:right-0 sm:top-0 sm:bottom-auto sm:h-full sm:max-h-none sm:w-full sm:max-w-sm sm:rounded-t-none sm:border-t-0 sm:border-l ' +
             (isFormOpen ? 'translate-y-0 sm:translate-x-0' : 'translate-y-full sm:translate-y-0 sm:translate-x-full')
           }
@@ -208,7 +208,7 @@ function Clients() {
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
                 required
-                className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
 
@@ -221,7 +221,7 @@ function Clients() {
                 placeholder="Téléphone"
                 value={telephone}
                 onChange={(e) => setTelephone(e.target.value)}
-                className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
 
@@ -234,7 +234,7 @@ function Clients() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
 
@@ -248,13 +248,13 @@ function Clients() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={4}
-                className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
 
             <button
               type="submit"
-              className="mt-2 w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+              className="mt-2 w-full rounded-xl bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               Créer
             </button>

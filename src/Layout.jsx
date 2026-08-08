@@ -14,7 +14,7 @@ function NavLink({ icon: Icon, active, collapsed, onClick, children }) {
     <button
       onClick={onClick}
       className={
-        'group relative flex items-center rounded-md text-sm font-medium transition-colors ' +
+        'group relative flex items-center rounded-xl text-sm font-medium transition-colors ' +
         (collapsed ? 'w-full justify-center py-2' : 'w-full gap-2 px-3 py-2 text-left') +
         ' ' +
         (active
@@ -58,13 +58,13 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         <button
           onClick={onSignOut}
           aria-label="Se déconnecter"
-          className="flex items-center justify-center rounded-md p-1.5 text-text-secondary hover:bg-page hover:text-text-primary"
+          className="flex items-center justify-center rounded-xl p-1.5 text-text-secondary hover:bg-page hover:text-text-primary"
         >
           <LogOut size={20} />
         </button>
       </header>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-border bg-surface sm:hidden">
+      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
         <MobileTabLink
           icon={LayoutDashboard}
           label="Dashboard"
@@ -81,7 +81,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
 
       <aside
         className={
-          'sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border bg-surface transition-all duration-200 sm:flex ' +
+          'sticky top-4 ml-4 hidden h-[calc(100vh-2rem)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft transition-all duration-200 sm:flex ' +
           (collapsed ? 'w-16' : 'w-64')
         }
       >
@@ -94,14 +94,14 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         >
           {!collapsed && <span className="text-lg font-bold text-text-primary">Mini CRM</span>}
           {collapsed && (
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-sm font-bold text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white">
               M
             </span>
           )}
           <button
             onClick={() => setCollapsed((c) => !c)}
             aria-label={collapsed ? 'Déplier la sidebar' : 'Replier la sidebar'}
-            className="flex items-center justify-center rounded-md p-1.5 text-text-secondary hover:bg-page hover:text-text-primary"
+            className="flex items-center justify-center rounded-xl p-1.5 text-text-secondary hover:bg-page hover:text-text-primary"
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
@@ -146,7 +146,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
           <div className="mt-auto flex flex-col items-center gap-1 border-t border-border px-2 py-4">
             <button
               onClick={onSignOut}
-              className="group relative flex w-full items-center justify-center rounded-md py-2 text-text-secondary hover:bg-page hover:text-text-primary"
+              className="group relative flex w-full items-center justify-center rounded-xl py-2 text-text-secondary hover:bg-page hover:text-text-primary"
             >
               <LogOut size={18} />
               <Tooltip label="Se déconnecter" />

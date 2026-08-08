@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Euro, Clock, Package } from 'lucide-react'
 import { supabase } from './supabaseClient'
 
 function daysSince(dateStr) {
@@ -9,8 +9,6 @@ function daysSince(dateStr) {
 
 function Dashboard() {
   const [commandes, setCommandes] = useState([])
-  const [sortBy, setSortBy] = useState(null)
-  const [sortDirection, setSortDirection] = useState('asc')
   const [searchText, setSearchText] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
@@ -49,27 +47,6 @@ function Dashboard() {
       return true
     })
 
-  const facturesAffichees = sortBy
-    ? [...facturesFiltrees].sort((a, b) => {
-        let cmp = 0
-        if (sortBy === 'client') {
-          cmp = (a.clients?.nom ?? '').localeCompare(b.clients?.nom ?? '')
-        } else if (sortBy === 'montant') {
-          cmp = Number(a.montant) - Number(b.montant)
-        }
-        return sortDirection === 'asc' ? cmp : -cmp
-      })
-    : facturesFiltrees
-
-  function handleSort(column) {
-    if (sortBy === column) {
-      setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortBy(column)
-      setSortDirection('asc')
-    }
-  }
-
   async function handleRelance(commande) {
     try {
       const res = await fetch(import.meta.env.VITE_MAKE_WEBHOOK_URL, {
@@ -93,29 +70,38 @@ function Dashboard() {
 
   return (
     <div>
-      <h2 className="hidden text-2xl font-bold text-text-primary sm:block">Dashboard</h2>
+      <h2 className="hidden font-heading text-2xl font-bold text-text-primary sm:block">Dashboard</h2>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-border bg-surface p-6">
-          <p className="text-3xl font-bold text-text-primary">{caTotal.toFixed(2)}€</p>
-          <p className="mt-1 text-sm text-text-secondary">CA encaissé (Payé)</p>
+        <div className="rounded-2xl bg-accent/85 p-6 text-white shadow-soft">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-3xl font-bold">{caTotal.toFixed(2)}€</p>
+            <Euro size={28} className="shrink-0 text-white" />
+          </div>
+          <p className="mt-1 text-xs uppercase tracking-wide text-white/90">CA encaissé (Payé)</p>
         </div>
-        <div className="rounded-lg border border-border bg-surface p-6">
-          <p className="text-3xl font-bold text-text-primary">{nbEnCours}</p>
-          <p className="mt-1 text-sm text-text-secondary">Commandes en cours</p>
+        <div className="rounded-2xl border border-border bg-surface/85 p-6 shadow-soft">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-3xl font-bold text-text-primary">{nbEnCours}</p>
+            <Clock size={28} className="shrink-0 text-text-secondary" />
+          </div>
+          <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">Commandes en cours</p>
         </div>
-        <div className="rounded-lg border border-border bg-surface p-6">
-          <p className="text-3xl font-bold text-text-primary">{nbLivre}</p>
-          <p className="mt-1 text-sm text-text-secondary">
+        <div className="rounded-2xl border border-border bg-surface/85 p-6 shadow-soft">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-3xl font-bold text-text-primary">{nbLivre}</p>
+            <Package size={28} className="shrink-0 text-text-secondary" />
+          </div>
+          <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">
             Commandes livrées (en attente de paiement)
           </p>
         </div>
       </div>
 
-      <h3 className="mt-10 text-lg font-semibold text-text-primary">Factures à relancer</h3>
+      <h3 className="mt-10 font-heading text-lg font-semibold text-text-primary">Factures à relancer</h3>
 
       {facturesARelancer.length === 0 ? (
-        <div className="mt-4 rounded-lg border border-border bg-surface p-6 text-center text-text-secondary">
+        <div className="mt-4 rounded-2xl border border-border bg-surface/85 p-6 text-center text-text-secondary shadow-soft">
           Rien à relancer pour l'instant.
         </div>
       ) : (
@@ -126,13 +112,13 @@ function Dashboard() {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="Rechercher un client..."
-              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
+              className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
             />
             <div className="relative w-full sm:w-auto">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full appearance-none rounded-md border border-border bg-surface py-2 pl-3 pr-9 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
+                className="w-full appearance-none rounded-xl border border-border bg-surface py-2 pl-3 pr-9 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
               >
                 <option value="all">Tous les statuts</option>
                 <option value="j15">Relance (J+15)</option>
@@ -145,15 +131,15 @@ function Dashboard() {
             </div>
           </div>
 
-          {facturesAffichees.length === 0 ? (
-            <div className="mt-4 rounded-lg border border-border bg-surface p-6 text-center text-text-secondary">
+          {facturesFiltrees.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-border bg-surface/85 p-6 text-center text-text-secondary shadow-soft">
               Aucune facture ne correspond aux filtres.
             </div>
           ) : (
             <>
               <div className="mt-4 flex flex-col gap-3 sm:hidden">
-                {facturesAffichees.map((c) => (
-                  <div key={c.id} className="rounded-lg border border-border bg-surface p-4">
+                {facturesFiltrees.map((c) => (
+                  <div key={c.id} className="rounded-2xl border border-border bg-surface/85 p-4 shadow-soft">
                     <dl className="flex flex-col gap-2 text-sm">
                       <div className="flex items-center justify-between gap-3">
                         <dt className="text-text-secondary">Client</dt>
@@ -180,7 +166,7 @@ function Dashboard() {
                     </dl>
                     <button
                       onClick={() => handleRelance(c)}
-                      className="mt-4 w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+                      className="mt-4 w-full rounded-xl bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
                     >
                       Envoyer la relance
                     </button>
@@ -188,44 +174,42 @@ function Dashboard() {
                 ))}
               </div>
 
-              <div className="mt-4 hidden overflow-x-auto rounded-lg border border-border bg-surface sm:block">
-                <table className="w-full min-w-[720px] text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-border text-text-secondary">
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">
-                        <SortHeader label="Client" column="client" sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
-                      </th>
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">Description</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">
-                        <SortHeader label="Montant" column="montant" sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
-                      </th>
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">Retard</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">Statut</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-medium">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {facturesAffichees.map((c) => (
-                      <tr key={c.id} className="border-b border-border last:border-b-0">
-                        <td className="whitespace-nowrap px-4 py-3 text-text-primary">{c.clients?.nom}</td>
-                        <td className="whitespace-nowrap px-4 py-3 text-text-primary">{c.description}</td>
-                        <td className="whitespace-nowrap px-4 py-3 text-text-primary">{c.montant}€</td>
-                        <td className="whitespace-nowrap px-4 py-3 text-text-primary">{c.jours} jours</td>
-                        <td className="whitespace-nowrap px-4 py-3">
-                          <StatusBadge jours={c.jours} />
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-3">
-                          <button
-                            onClick={() => handleRelance(c)}
-                            className="rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
-                          >
-                            Envoyer la relance
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="mt-4 hidden flex-col gap-3 sm:flex">
+                {facturesFiltrees.map((c) => (
+                  <div
+                    key={c.id}
+                    className="flex flex-wrap items-start gap-x-8 gap-y-3 rounded-2xl border border-border bg-surface/85 p-4 shadow-soft"
+                  >
+                    <div className="min-w-[8rem]">
+                      <p className="text-xs uppercase tracking-wide text-text-secondary">Client</p>
+                      <p className="mt-2 text-sm font-medium text-text-primary">{c.clients?.nom}</p>
+                    </div>
+                    <div className="min-w-[10rem]">
+                      <p className="text-xs uppercase tracking-wide text-text-secondary">Description</p>
+                      <p className="mt-2 text-sm text-text-primary">{c.description}</p>
+                    </div>
+                    <div className="min-w-[5rem]">
+                      <p className="text-xs uppercase tracking-wide text-text-secondary">Montant</p>
+                      <p className="mt-2 text-sm text-text-primary">{c.montant}€</p>
+                    </div>
+                    <div className="min-w-[5rem]">
+                      <p className="text-xs uppercase tracking-wide text-text-secondary">Retard</p>
+                      <p className="mt-2 text-sm text-text-primary">{c.jours} jours</p>
+                    </div>
+                    <div className="min-w-[9rem]">
+                      <p className="text-xs uppercase tracking-wide text-text-secondary">Statut</p>
+                      <div className="mt-1">
+                        <StatusBadge jours={c.jours} />
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleRelance(c)}
+                      className="ml-auto shrink-0 self-center rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                    >
+                      Envoyer la relance
+                    </button>
+                  </div>
+                ))}
               </div>
             </>
           )}
@@ -244,21 +228,6 @@ function StatusBadge({ jours }) {
     <span className="inline-block rounded-full bg-warning px-2.5 py-1 text-xs font-medium text-white">
       Relance (J+15)
     </span>
-  )
-}
-
-function SortHeader({ label, column, sortBy, sortDirection, onSort }) {
-  const active = sortBy === column
-  return (
-    <button
-      onClick={() => onSort(column)}
-      className="inline-flex items-center gap-1 hover:text-text-primary"
-    >
-      {label}
-      <span className={active ? 'text-text-primary' : 'text-text-secondary/40'}>
-        {active && sortDirection === 'desc' ? '▼' : '▲'}
-      </span>
-    </button>
   )
 }
 
