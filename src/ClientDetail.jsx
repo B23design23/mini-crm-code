@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ChevronDown, Pencil, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react'
 import { supabase } from './supabaseClient'
 
 function computeLivreLe(currentLivreLe, newStatut) {
@@ -536,7 +536,7 @@ function SortHeader({ label, column, sortBy, sortDirection, onSort }) {
     >
       {label}
       <span className={active ? 'text-text-primary' : 'text-text-secondary/40'}>
-        {active && sortDirection === 'desc' ? '▼' : '▲'}
+        {active && sortDirection === 'desc' ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
       </span>
     </button>
   )

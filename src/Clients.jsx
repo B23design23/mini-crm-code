@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ChevronUp, ChevronDown } from 'lucide-react'
 import { supabase } from './supabaseClient'
 import ClientDetail from './ClientDetail'
 
@@ -274,7 +274,7 @@ function SortHeader({ label, column, sortBy, sortDirection, onSort }) {
     >
       {label}
       <span className={active ? 'text-text-primary' : 'text-text-secondary/40'}>
-        {active && sortDirection === 'desc' ? '▼' : '▲'}
+        {active && sortDirection === 'desc' ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
       </span>
     </button>
   )

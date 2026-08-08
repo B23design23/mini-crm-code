@@ -53,7 +53,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
 
   return (
     <div className="flex min-h-screen bg-page">
-      <header className="fixed inset-x-0 top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-surface px-4 sm:hidden">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center justify-between border-b border-border bg-surface px-4 pt-[env(safe-area-inset-top)] pl-[calc(1rem+env(safe-area-inset-left))] pr-[calc(1rem+env(safe-area-inset-right))] sm:hidden">
         <span className="text-base font-semibold text-text-primary">{pageTitle}</span>
         <button
           onClick={onSignOut}
@@ -64,7 +64,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         </button>
       </header>
 
-      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
+      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-soft sm:hidden">
         <MobileTabLink
           icon={LayoutDashboard}
           label="Dashboard"
@@ -155,7 +155,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         )}
       </aside>
 
-      <main className="flex-1 bg-page p-4 pb-20 pt-16 sm:p-8">{children}</main>
+      <main className="flex-1 bg-page p-4 pb-20 pt-[calc(4rem+env(safe-area-inset-top))] sm:p-8">{children}</main>
     </div>
   )
 }
