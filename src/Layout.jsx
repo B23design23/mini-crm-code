@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, LayoutDashboard, Users, LogOut } from 'lucide-react'
+import mateLogoBadge from './assets/mate-logo-badge.svg'
+import mateLogoIcon from './assets/mate-logo-icon.svg'
 
 function Tooltip({ label }) {
   return (
@@ -14,12 +16,14 @@ function NavLink({ icon: Icon, active, collapsed, onClick, children }) {
     <button
       onClick={onClick}
       className={
-        'group relative flex items-center rounded-xl text-sm font-medium transition-colors ' +
-        (collapsed ? 'w-full justify-center py-2' : 'w-full gap-2 px-3 py-2 text-left') +
+        'group relative flex items-center text-sm font-medium transition-colors ' +
+        (collapsed
+          ? 'aspect-square w-full justify-center rounded-[20%]'
+          : 'w-full gap-2 rounded-xl px-3 py-2 text-left') +
         ' ' +
         (active
-          ? 'bg-accent text-white'
-          : 'text-text-secondary hover:bg-page hover:text-text-primary')
+          ? 'bg-red-50 text-accent'
+          : 'text-text-secondary hover:bg-red-50 hover:text-accent')
       }
     >
       <Icon size={18} className="shrink-0" />
@@ -81,7 +85,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
 
       <aside
         className={
-          'sticky top-4 ml-4 hidden h-[calc(100vh-2rem)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft transition-all duration-200 sm:flex ' +
+          'sticky top-4 ml-4 hidden h-[calc(100vh-2rem)] shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft transition-all duration-200 ease-in-out sm:flex ' +
           (collapsed ? 'w-16' : 'w-64')
         }
       >
@@ -92,12 +96,13 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
               : 'flex items-center justify-between px-5 py-6'
           }
         >
-          {!collapsed && <span className="text-lg font-bold text-text-primary">Mini CRM</span>}
-          {collapsed && (
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white">
-              M
+          {!collapsed && (
+            <span className="flex items-center gap-2">
+              <img src={mateLogoIcon} alt="" className="h-6 w-auto" />
+              <span className="font-heading text-lg font-bold text-text-primary">Mate</span>
             </span>
           )}
+          {collapsed && <img src={mateLogoBadge} alt="Mate" className="h-8 w-8 rounded-[20%]" />}
           <button
             onClick={() => setCollapsed((c) => !c)}
             aria-label={collapsed ? 'Déplier la sidebar' : 'Replier la sidebar'}
@@ -155,7 +160,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
         )}
       </aside>
 
-      <main className="flex-1 bg-page p-4 pb-20 pt-[calc(4rem+env(safe-area-inset-top))] sm:p-8">{children}</main>
+      <main className="flex-1 bg-page p-4 pb-20 pt-[calc(4rem+env(safe-area-inset-top))] sm:p-8 sm:pt-10">{children}</main>
     </div>
   )
 }

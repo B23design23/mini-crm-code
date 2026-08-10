@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from './supabaseClient'
+import mateLogoIcon from './assets/mate-logo-icon.svg'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -17,7 +18,10 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-page px-4">
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface/85 p-8 shadow-soft">
-        <h1 className="mb-6 text-center font-heading text-lg font-bold text-text-primary">Mini CRM</h1>
+        <div className="mb-6 flex items-center justify-center gap-2">
+          <img src={mateLogoIcon} alt="" className="h-6 w-auto" />
+          <span className="font-heading text-lg font-bold text-text-primary">Mate</span>
+        </div>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
