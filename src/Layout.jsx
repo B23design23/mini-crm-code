@@ -58,7 +58,7 @@ function Layout({ view, onNavigate, onSignOut, children }) {
   return (
     <div className="flex min-h-screen bg-page">
       <header className="fixed inset-x-0 top-0 z-30 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center justify-between border-b border-border bg-surface px-4 pt-[env(safe-area-inset-top)] pl-[calc(1rem+env(safe-area-inset-left))] pr-[calc(1rem+env(safe-area-inset-right))] sm:hidden">
-        <span className="text-base font-semibold text-text-primary">{pageTitle}</span>
+        <span className="font-heading text-base font-semibold text-text-primary">{pageTitle}</span>
         <button
           onClick={onSignOut}
           aria-label="Se déconnecter"
@@ -68,7 +68,7 @@ function Layout({ view, onNavigate, onSignOut, children }) {
         </button>
       </header>
 
-      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
+      <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:hidden">
         <MobileTabLink
           icon={LayoutDashboard}
           label="Tableau de bord"
