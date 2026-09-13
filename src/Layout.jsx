@@ -48,12 +48,12 @@ function MobileTabLink({ icon: Icon, label, active, onClick }) {
   )
 }
 
-function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
+function Layout({ view, onNavigate, onSignOut, children }) {
   const [collapsed, setCollapsed] = useState(
     () => typeof window !== 'undefined' && window.innerWidth <= 1024
   )
 
-  const pageTitle = view === 'dashboard' ? 'Dashboard' : 'Clients'
+  const pageTitle = view === 'dashboard' ? 'Tableau de bord' : 'Clients'
 
   return (
     <div className="flex min-h-screen bg-page">
@@ -71,7 +71,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
       <nav className="fixed inset-x-4 bottom-4 z-30 flex overflow-hidden rounded-2xl border border-border bg-surface/85 shadow-soft sm:hidden">
         <MobileTabLink
           icon={LayoutDashboard}
-          label="Dashboard"
+          label="Tableau de bord"
           active={view === 'dashboard'}
           onClick={() => onNavigate('dashboard')}
         />
@@ -124,7 +124,7 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
             collapsed={collapsed}
             onClick={() => onNavigate('dashboard')}
           >
-            Dashboard
+            Tableau de bord
           </NavLink>
           <NavLink
             icon={Users}
@@ -138,10 +138,9 @@ function Layout({ view, onNavigate, userEmail, onSignOut, children }) {
 
         {!collapsed ? (
           <div className="mt-auto border-t border-border px-5 py-4">
-            <p className="truncate text-sm text-text-secondary">{userEmail}</p>
             <button
               onClick={onSignOut}
-              className="mt-2 flex items-center gap-2 text-sm font-medium text-text-secondary hover:underline"
+              className="flex items-center gap-2 text-sm font-medium text-text-secondary hover:underline"
             >
               <LogOut size={16} />
               Se déconnecter

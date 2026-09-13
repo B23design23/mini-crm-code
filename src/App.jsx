@@ -26,12 +26,7 @@ function App() {
   }
 
   return (
-    <Layout
-      view={view}
-      onNavigate={setView}
-      userEmail={session.user.email}
-      onSignOut={() => supabase.auth.signOut()}
-    >
+    <Layout view={view} onNavigate={setView} onSignOut={() => supabase.auth.signOut()}>
       {view === 'clients' && <Clients />}
       {view === 'dashboard' && <Dashboard />}
     </Layout>

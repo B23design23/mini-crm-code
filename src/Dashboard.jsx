@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
-import { ChevronDown, Euro, Clock, Package } from 'lucide-react'
+import { Euro, Clock, Package } from 'lucide-react'
 import { supabase } from './supabaseClient'
+import Dropdown from './Dropdown'
+
+const STATUS_FILTER_OPTIONS = [
+  { value: 'all', label: 'Tous les statuts' },
+  { value: 'j15', label: 'Relance (J+15)' },
+  { value: 'j30', label: 'Relance ferme (J+30)' },
+]
 
 function daysSince(dateStr) {
   const diffMs = Date.now() - new Date(dateStr).getTime()
@@ -70,7 +77,7 @@ function Dashboard() {
 
   return (
     <div>
-      <h2 className="hidden font-heading text-2xl font-bold text-text-primary sm:block">Dashboard</h2>
+      <h2 className="hidden font-heading text-2xl font-bold text-text-primary sm:block">Tableau de bord</h2>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl bg-accent/85 p-6 text-white shadow-soft">
@@ -80,21 +87,23 @@ function Dashboard() {
           </div>
           <p className="mt-1 text-xs uppercase tracking-wide text-white/90">CA encaissé (Payé)</p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface/85 p-6 shadow-soft">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-3xl font-bold text-text-primary">{nbEnCours}</p>
-            <Clock size={28} className="shrink-0 text-text-secondary" />
+        <div className="grid grid-cols-2 gap-4 sm:contents">
+          <div className="rounded-2xl border border-border bg-surface/85 p-4 shadow-soft sm:p-6">
+            <div className="flex items-center justify-between gap-2 sm:gap-3">
+              <p className="text-3xl font-bold text-text-primary">{nbEnCours}</p>
+              <Clock size={28} className="shrink-0 text-text-secondary" />
+            </div>
+            <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">Commandes en cours</p>
           </div>
-          <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">Commandes en cours</p>
-        </div>
-        <div className="rounded-2xl border border-border bg-surface/85 p-6 shadow-soft">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-3xl font-bold text-text-primary">{nbLivre}</p>
-            <Package size={28} className="shrink-0 text-text-secondary" />
+          <div className="rounded-2xl border border-border bg-surface/85 p-4 shadow-soft sm:p-6">
+            <div className="flex items-center justify-between gap-2 sm:gap-3">
+              <p className="text-3xl font-bold text-text-primary">{nbLivre}</p>
+              <Package size={28} className="shrink-0 text-text-secondary" />
+            </div>
+            <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">
+              Commandes terminées (en attente de paiement)
+            </p>
           </div>
-          <p className="mt-1 text-xs uppercase tracking-wide text-text-secondary">
-            Commandes livrées (en attente de paiement)
-          </p>
         </div>
       </div>
 
@@ -114,21 +123,12 @@ function Dashboard() {
               placeholder="Rechercher un client..."
               className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
             />
-            <div className="relative w-full sm:w-auto">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-border bg-surface py-2 pl-3 pr-9 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
-              >
-                <option value="all">Tous les statuts</option>
-                <option value="j15">Relance (J+15)</option>
-                <option value="j30">Relance ferme (J+30)</option>
-              </select>
-              <ChevronDown
-                size={16}
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
-              />
-            </div>
+            <Dropdown
+              value={statusFilter}
+              onChange={setStatusFilter}
+              options={STATUS_FILTER_OPTIONS}
+              className="w-full sm:w-56"
+            />
           </div>
 
           {facturesFiltrees.length === 0 ? (
@@ -175,36 +175,29 @@ function Dashboard() {
               </div>
 
               <div className="mt-4 hidden flex-col gap-3 sm:flex">
+                <div className="grid grid-cols-[9rem_1fr_6rem_6rem_9rem_10rem] gap-x-4 px-4">
+                  <p className="text-xs uppercase tracking-wide text-text-secondary">Client</p>
+                  <p className="text-xs uppercase tracking-wide text-text-secondary">Description</p>
+                  <p className="text-xs uppercase tracking-wide text-text-secondary">Montant</p>
+                  <p className="text-xs uppercase tracking-wide text-text-secondary">Retard</p>
+                  <p className="text-xs uppercase tracking-wide text-text-secondary">Statut</p>
+                  <span />
+                </div>
                 {facturesFiltrees.map((c) => (
                   <div
                     key={c.id}
-                    className="flex flex-wrap items-start gap-x-8 gap-y-3 rounded-2xl border border-border bg-surface/85 p-4 shadow-soft"
+                    className="grid grid-cols-[9rem_1fr_6rem_6rem_9rem_10rem] items-center gap-x-4 rounded-2xl border border-border bg-surface/85 p-4 shadow-soft"
                   >
-                    <div className="min-w-[8rem]">
-                      <p className="text-xs uppercase tracking-wide text-text-secondary">Client</p>
-                      <p className="mt-2 text-sm font-medium text-text-primary">{c.clients?.nom}</p>
-                    </div>
-                    <div className="min-w-[10rem]">
-                      <p className="text-xs uppercase tracking-wide text-text-secondary">Description</p>
-                      <p className="mt-2 text-sm text-text-primary">{c.description}</p>
-                    </div>
-                    <div className="min-w-[5rem]">
-                      <p className="text-xs uppercase tracking-wide text-text-secondary">Montant</p>
-                      <p className="mt-2 text-sm text-text-primary">{c.montant}€</p>
-                    </div>
-                    <div className="min-w-[5rem]">
-                      <p className="text-xs uppercase tracking-wide text-text-secondary">Retard</p>
-                      <p className="mt-2 text-sm text-text-primary">{c.jours} jours</p>
-                    </div>
-                    <div className="min-w-[9rem]">
-                      <p className="text-xs uppercase tracking-wide text-text-secondary">Statut</p>
-                      <div className="mt-1">
-                        <StatusBadge jours={c.jours} />
-                      </div>
+                    <p className="truncate text-sm font-medium text-text-primary">{c.clients?.nom}</p>
+                    <p className="truncate text-sm text-text-primary">{c.description}</p>
+                    <p className="text-sm text-text-primary">{c.montant}€</p>
+                    <p className="text-sm text-text-primary">{c.jours} jours</p>
+                    <div>
+                      <StatusBadge jours={c.jours} />
                     </div>
                     <button
                       onClick={() => handleRelance(c)}
-                      className="ml-auto shrink-0 self-center rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                      className="justify-self-end shrink-0 rounded-xl bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
                     >
                       Envoyer la relance
                     </button>

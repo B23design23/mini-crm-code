@@ -1,6 +1,22 @@
 import { useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react'
 import { supabase } from './supabaseClient'
+import Dropdown from './Dropdown'
+
+const SORT_OPTIONS = [
+  { value: 'date-desc', label: 'Date (plus récent)' },
+  { value: 'date-asc', label: 'Date (plus ancien)' },
+  { value: 'montant-asc', label: 'Montant (croissant)' },
+  { value: 'montant-desc', label: 'Montant (décroissant)' },
+  { value: 'statut-asc', label: 'Statut (A→Z)' },
+  { value: 'statut-desc', label: 'Statut (Z→A)' },
+]
+
+const STATUT_OPTIONS = [
+  { value: 'En cours', label: 'En cours' },
+  { value: 'Livré', label: 'Terminé' },
+  { value: 'Payé', label: 'Payé' },
+]
 
 function computeLivreLe(currentLivreLe, newStatut) {
   if (newStatut === 'Livré' && !currentLivreLe) {
@@ -278,28 +294,16 @@ function ClientDetail({ client, onBack, onClientUpdated }) {
             </div>
           ) : (
             <>
-              <div className="relative mt-4 sm:hidden">
-                <select
-                  value={`${sortBy}-${sortDirection}`}
-                  onChange={(e) => {
-                    const [column, direction] = e.target.value.split('-')
-                    setSortBy(column)
-                    setSortDirection(direction)
-                  }}
-                  className="w-full appearance-none rounded-xl border border-border bg-surface py-2 pl-3 pr-9 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
-                >
-                  <option value="date-desc">Date (plus récent)</option>
-                  <option value="date-asc">Date (plus ancien)</option>
-                  <option value="montant-asc">Montant (croissant)</option>
-                  <option value="montant-desc">Montant (décroissant)</option>
-                  <option value="statut-asc">Statut (A→Z)</option>
-                  <option value="statut-desc">Statut (Z→A)</option>
-                </select>
-                <ChevronDown
-                  size={16}
-                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
-                />
-              </div>
+              <Dropdown
+                value={`${sortBy}-${sortDirection}`}
+                onChange={(val) => {
+                  const [column, direction] = val.split('-')
+                  setSortBy(column)
+                  setSortDirection(direction)
+                }}
+                options={SORT_OPTIONS}
+                className="mt-4 w-full sm:hidden"
+              />
 
               <div className="mt-4 flex flex-col gap-3 sm:hidden">
                 {sortedCommandes.map((commande) => (
@@ -320,15 +324,12 @@ function ClientDetail({ client, onBack, onClientUpdated }) {
                       <div className="flex items-center justify-between gap-3">
                         <dt className="text-text-secondary">Statut</dt>
                         <dd>
-                          <select
+                          <Dropdown
                             value={commande.statut}
-                            onChange={(e) => handleStatusChange(commande, e.target.value)}
-                            className="rounded-xl border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
-                          >
-                            <option value="En cours">En cours</option>
-                            <option value="Livré">Livré</option>
-                            <option value="Payé">Payé</option>
-                          </select>
+                            onChange={(val) => handleStatusChange(commande, val)}
+                            options={STATUT_OPTIONS}
+                            className="w-32"
+                          />
                         </dd>
                       </div>
                     </dl>
@@ -384,15 +385,12 @@ function ClientDetail({ client, onBack, onClientUpdated }) {
                           {commande.montant}€
                         </td>
                         <td className="whitespace-nowrap px-4 py-3">
-                          <select
+                          <Dropdown
                             value={commande.statut}
-                            onChange={(e) => handleStatusChange(commande, e.target.value)}
-                            className="rounded-xl border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
-                          >
-                            <option value="En cours">En cours</option>
-                            <option value="Livré">Livré</option>
-                            <option value="Payé">Payé</option>
-                          </select>
+                            onChange={(val) => handleStatusChange(commande, val)}
+                            options={STATUT_OPTIONS}
+                            className="w-32"
+                          />
                         </td>
                         <td className="whitespace-nowrap px-4 py-3">
                           <div className="flex gap-3">
@@ -488,16 +486,7 @@ function ClientDetail({ client, onBack, onClientUpdated }) {
               <label htmlFor="commande-statut" className="text-sm font-medium text-text-primary">
                 Statut
               </label>
-              <select
-                id="commande-statut"
-                value={statut}
-                onChange={(e) => setStatut(e.target.value)}
-                className="rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent"
-              >
-                <option value="En cours">En cours</option>
-                <option value="Livré">Livré</option>
-                <option value="Payé">Payé</option>
-              </select>
+              <Dropdown id="commande-statut" value={statut} onChange={setStatut} options={STATUT_OPTIONS} />
             </div>
 
             <div className="mt-2 flex items-center gap-4">
